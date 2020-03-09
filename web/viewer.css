@@ -167,11 +167,12 @@ html[dir='rtl'] #sidebarContent {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   position: absolute;
-  top: 32px;
+  top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   outline: none;
+  background-color: rgb(230, 230, 230);
 }
 #viewerContainer:not(.pdfPresentationMode) {
   transition-duration: var(--sidebar-transition-duration);
@@ -199,15 +200,18 @@ html[dir='rtl'] #outerContainer.sidebarOpen #viewerContainer:not(.pdfPresentatio
 }
 
 .toolbar {
-  position: relative;
+  position: absolute;
   left: 0;
   right: 0;
+  bottom:0;
   z-index: 9999;
   cursor: default;
 }
 
 #toolbarContainer {
   width: 100%;
+  background-color: rgb(243, 242, 241) !important;
+  background-image: none !important;
 }
 
 #toolbarSidebar {
@@ -247,10 +251,12 @@ html[dir='rtl'] #sidebarResizer {
 
 #toolbarContainer, .findbar, .secondaryToolbar {
   position: relative;
-  height: 32px;
-  background-color: rgba(71, 71, 71, 1); /* fallback */
+  height: 33px;
+  background-color: rgb(243, 242, 241);
+  /*background-color: rgba(71, 71, 71, 1);
   background-image: url(images/texture.png),
                     linear-gradient(rgba(82, 82, 82, 0.99), rgba(69, 69, 69, 0.95));
+                    */
 }
 html[dir='ltr'] #toolbarContainer, .findbar, .secondaryToolbar {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.15),
@@ -312,7 +318,8 @@ html[dir='rtl'] #toolbarContainer, .findbar, .secondaryToolbar {
 }
 
 .findbar, .secondaryToolbar {
-  top: 32px;
+  bottom: 32px;
+  left: 0 !important;
   position: absolute;
   z-index: 10000;
   height: auto;
@@ -324,6 +331,9 @@ html[dir='rtl'] #toolbarContainer, .findbar, .secondaryToolbar {
   line-height: 14px;
   text-align: left;
   cursor: default;
+
+  border: 1px solid #333;
+
 }
 
 .findbar {
@@ -621,7 +631,7 @@ html[dir='rtl'] .splitToolbarButtonSeparator {
   padding: 2px 6px 0;
   border: 1px solid rgba(0, 0, 0, 0);
   border-radius: 2px;
-  color: rgba(255, 255, 255, 0.8);
+  color:hsla(0,0%,100%,.8);
   font-size: 12px;
   line-height: 14px;
   user-select: none;
@@ -720,7 +730,7 @@ html[dir='rtl'] .dropdownToolbarButton::after {
   width: 162px;
   height: 23px;
   font-size: 12px;
-  color: rgba(242, 242, 242, 1);
+  color: #333;
   margin: 0;
   padding: 3px 2px 2px;
   border: none;
@@ -728,7 +738,7 @@ html[dir='rtl'] .dropdownToolbarButton::after {
 }
 
 .dropdownToolbarButton > select > option {
-  background: rgba(61, 61, 61, 1);
+  background: rgb(243, 242, 241);
 }
 
 #customScaleOption {
@@ -957,19 +967,19 @@ html[dir="rtl"] .secondaryToolbarButton > span {
   content: url(images/secondaryToolbarButton-lastPage.png);
 }
 
-.secondaryToolbarButton.rotateCcw::before {
+.toolbarButton.rotateCcw::before {
   content: url(images/secondaryToolbarButton-rotateCcw.png);
 }
 
-.secondaryToolbarButton.rotateCw::before {
+.toolbarButton.rotateCw::before {
   content: url(images/secondaryToolbarButton-rotateCw.png);
 }
 
-.secondaryToolbarButton.selectTool::before {
+.toolbarButton.selectTool::before {
   content: url(images/secondaryToolbarButton-selectTool.png);
 }
 
-.secondaryToolbarButton.handTool::before {
+.toolbarButton.handTool::before {
   content: url(images/secondaryToolbarButton-handTool.png);
 }
 
@@ -1037,7 +1047,7 @@ html[dir='rtl'] .verticalToolbarSeparator {
   border-color: rgba(0, 0, 0, 0.32) rgba(0, 0, 0, 0.38) rgba(0, 0, 0, 0.42);
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05) inset,
               0 1px 0 rgba(255, 255, 255, 0.05);
-  color: rgba(242, 242, 242, 1);
+  color: #333;
   font-size: 12px;
   line-height: 14px;
   outline-style: none;
@@ -1086,7 +1096,8 @@ html[dir='rtl'] .verticalToolbarSeparator {
   margin: 4px 2px 4px 0;
   border: 1px solid rgba(0, 0, 0, 0);
   border-radius: 2px;
-  color: rgba(217, 217, 217, 1);
+  /*color: rgba(217, 217, 217, 1);*/
+  color: #333;
   font-size: 12px;
   line-height: 14px;
   text-align: left;
@@ -1723,8 +1734,8 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
     content: url(images/secondaryToolbarButton-rotateCw@2x.png);
   }
 
-  .secondaryToolbarButton.selectTool::before {
-    content: url(images/secondaryToolbarButton-selectTool@2x.png);
+  .toolbarButton.selectTool::before {
+    content: url(images/secondaryToolbarButton-selectTool.png);
   }
 
   .secondaryToolbarButton.handTool::before {
@@ -1920,4 +1931,16 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
   #scaleSelectContainer {
     display: none;
   }
+}
+
+
+#viewerContainer::-webkit-scrollbar
+{
+    background: #d8d2d2;
+    cursor: default !important;
+}
+
+#viewerContainer::-webkit-scrollbar-thumb {
+    background: #909090;
+    cursor: default !important;
 }
