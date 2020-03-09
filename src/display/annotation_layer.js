@@ -455,6 +455,12 @@ class TextWidgetAnnotationElement extends WidgetAnnotationElement {
         element.setAttribute("value", this.data.fieldValue);
       }
 
+      //console.log(element);
+      element.addEventListener('change', () => {
+        console.log(element.value);
+        this.data.fieldValue = element.value;
+      });
+
       element.disabled = this.data.readOnly;
 
       if (this.data.maxLen !== null) {

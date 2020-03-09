@@ -18,13 +18,16 @@
                 bottom: 0;
             }
         </style>
+        <script>
+            var exports = {};
+        </script>
+        <script src="./messageHandler.js" type="text/javascript"></script>
     </head>
     <body>
         <iframe id="pdfjsIframe" src="./viewer.html" ></iframe>
 
 
         <script type="text/javascript">
-
 
             function blobToUint8Array(blob) {
                 return new Promise((resolve, reject) => {
@@ -38,26 +41,27 @@
                 });
             }
 
-            window.addEventListener('load', () => {
-                var iframe = document.getElementById('pdfjsIframe');
+            var iframe = document.getElementById('pdfjsIframe');
+            window.messageHandler = messageHandlerBuilder.Parent(iframe, 'webviewerloaded');
 
-                iframe.contentWindow.document.addEventListener('pdfjs-ready', () => {
-                    fetch('../../test/pdfs/f1040.pdf')
-                        .then((response) => {
-                            response.blob()
-                                .then((blob) => {
-                                    blobToUint8Array(blob)
-                                        .then(uri => {
-                                            iframe.contentWindow.postMessage(uri, window.origin);
+
+            fetch('../../test/pdfs/f1040.pdf')
+                .then((response) => {
+                    response.blob()
+                        .then((blob) => {
+                            blobToUint8Array(blob)
+                                .then(uri => {
+                                    messageHandler.Send('pdfjs-display', uri)
+                                        .then(() => {
+                                            console.log("rendered");
                                         });
-
                                 });
 
                         });
 
                 });
 
-            });
+
 
         </script>
     </body>

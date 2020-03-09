@@ -201,8 +201,10 @@ function webViewerLoad() {
       window.PDFViewerApplicationOptions = appOptions.AppOptions;
       app.PDFViewerApplication.run(config);
 
-      var event = document.createEvent("CustomEvent");
-      event.initCustomEvent("pdfjs-ready", true, true, {});
+      StartListeningForPostMessages();
+
+      const event = document.createEvent("CustomEvent");
+      event.initCustomEvent("webviewerloaded", true, true, {});
       document.dispatchEvent(event);
     });
   } else {
@@ -213,21 +215,19 @@ function webViewerLoad() {
     window.PDFViewerApplication = pdfjsWebApp.PDFViewerApplication;
     window.PDFViewerApplicationOptions = pdfjsWebAppOptions.AppOptions;
 
-    if (typeof PDFJSDev !== "undefined" && PDFJSDev.test("GENERIC")) {
+
+
+    pdfjsWebApp.PDFViewerApplication.run(config);
+    StartListeningForPostMessages();
+
+    //if (typeof PDFJSDev !== "undefined" && PDFJSDev.test("GENERIC")) {
       // Give custom implementations of the default viewer a simpler way to
       // set various `AppOptions`, by dispatching an event once all viewer
       // files are loaded but *before* the viewer initialization has run.
       const event = document.createEvent("CustomEvent");
       event.initCustomEvent("webviewerloaded", true, true, {});
       document.dispatchEvent(event);
-    }
-
-    pdfjsWebApp.PDFViewerApplication.run(config);
-
-
-    var event2 = document.createEvent("CustomEvent");
-    event2.initCustomEvent("pdfjs-ready", true, true, {});
-    document.dispatchEvent(event2);
+    //}
   }
 }
 
