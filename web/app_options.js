@@ -68,7 +68,7 @@ const defaultOptions = {
   },
   eventBusDispatchToDOM: {
     /** @type {boolean} */
-    value: false,
+    value: true,
     kind: OptionKind.VIEWER + OptionKind.PREFERENCE,
   },
   externalLinkRel: {

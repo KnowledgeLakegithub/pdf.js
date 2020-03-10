@@ -24,7 +24,7 @@
         <script src="./messageHandler.js" type="text/javascript"></script>
     </head>
     <body>
-        <iframe id="pdfjsIframe" src="./viewer.html" ></iframe>
+        <iframe id="pdfjsIframe" src="../viewer.html" ></iframe>
 
 
         <script type="text/javascript">
@@ -42,16 +42,23 @@
             }
 
             var iframe = document.getElementById('pdfjsIframe');
-            window.messageHandler = messageHandlerBuilder.Parent(iframe, 'webviewerloaded');
+            window.messageHandler = messageHandlerBuilder.Parent(iframe, null, 'webviewerloaded');
 
+            messageHandler.Send('pdfjs-display', '../../test/pdfs/form.pdf');
 
+            /*setTimeout(() => {
+                console.log("Loading new PDF");
+                messageHandler.Send('pdfjs-display', '../../test/pdfs/form.pdf');
+            }, 10000);*/
+            /*
             fetch('../../test/pdfs/f1040.pdf')
                 .then((response) => {
                     response.blob()
                         .then((blob) => {
                             blobToUint8Array(blob)
                                 .then(uri => {
-                                    messageHandler.Send('pdfjs-display', uri)
+
+                                    messageHandler.Send('pdfjs-display', blob)
                                         .then(() => {
                                             console.log("rendered");
                                         });
@@ -60,7 +67,7 @@
                         });
 
                 });
-
+                */
 
 
         </script>

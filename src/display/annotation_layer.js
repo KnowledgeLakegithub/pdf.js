@@ -30,6 +30,14 @@ import {
   warn,
 } from "../shared/util.js";
 
+
+function triggerAnnotationUpdate(key, value) {
+  if (typeof(window.onAnnotationUpdate) == 'function')
+    window.onAnnotationUpdate(key, value);
+}
+
+
+
 /**
  * @typedef {Object} AnnotationElementParameters
  * @property {Object} data
@@ -455,13 +463,15 @@ class TextWidgetAnnotationElement extends WidgetAnnotationElement {
         element.setAttribute("value", this.data.fieldValue);
       }
 
-      //console.log(element);
-      element.addEventListener('change', () => {
-        console.log(element.value);
-        this.data.fieldValue = element.value;
-      });
-
       element.disabled = this.data.readOnly;
+
+      // Post back updates
+      if (!element.disabled) {
+        element.addEventListener('change', () => {
+          triggerAnnotationUpdate(this.data.fieldName, element.value);
+          this.data.fieldValue = element.value;
+        });
+      }
 
       if (this.data.maxLen !== null) {
         element.maxLength = this.data.maxLen;
@@ -555,6 +565,14 @@ class CheckboxWidgetAnnotationElement extends WidgetAnnotationElement {
       element.setAttribute("checked", true);
     }
 
+    // Post back updates
+    if (!element.disabled) {
+      element.addEventListener('change', () => {
+        triggerAnnotationUpdate(this.data.fieldName, element.checked);
+        this.data.fieldValue = element.checked;
+      });
+    }
+
     this.container.appendChild(element);
     return this.container;
   }
@@ -582,6 +600,14 @@ class RadioButtonWidgetAnnotationElement extends WidgetAnnotationElement {
     element.name = this.data.fieldName;
     if (this.data.fieldValue === this.data.buttonValue) {
       element.setAttribute("checked", true);
+    }
+
+    // Post back updates
+    if (!element.disabled) {
+      element.addEventListener('change', () => {
+        triggerAnnotationUpdate(this.data.fieldName, this.data.buttonValue);
+        this.data.fieldValue = element.buttonValue;
+      });
     }
 
     this.container.appendChild(element);
@@ -644,6 +670,25 @@ class ChoiceWidgetAnnotationElement extends WidgetAnnotationElement {
         optionElement.setAttribute("selected", true);
       }
       selectElement.appendChild(optionElement);
+    }
+
+    // Post back updates
+    if (!selectElement.disabled) {
+      selectElement.addEventListener('change', () => {
+        var selectedValue = selectElement.value;
+        var displayValue = null;
+        for (let i = 0; i < this.data.options.length; i++) {
+          if (this.data.options[i].exportValue == selectedValue) {
+            displayValue = this.data.options[i].displayValue;
+            break;
+          }
+        }
+
+        if (displayValue == null)
+          displayValue = selectedValue;
+        triggerAnnotationUpdate(this.data.fieldName, displayValue);
+        this.data.fieldValue = selectElement.value;
+      });
     }
 
     this.container.appendChild(selectElement);

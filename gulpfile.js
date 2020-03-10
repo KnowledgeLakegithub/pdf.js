@@ -751,11 +751,11 @@ function buildGeneric(defines, dir) {
         base: "web/",
       })
       .pipe(gulp.dest(dir + "web")),
-    gulp
+    /*gulp
       .src(["external/bcmaps/*.bcmap", "external/bcmaps/LICENSE"], {
         base: "external/bcmaps",
       })
-      .pipe(gulp.dest(dir + "web/cmaps")),
+      .pipe(gulp.dest(dir + "web/cmaps")),*/
     preprocessHTML("web/viewer.html", defines).pipe(gulp.dest(dir + "web")),
     preprocessCSS("web/viewer.css", "generic", defines, true)
       .pipe(
@@ -767,9 +767,9 @@ function buildGeneric(defines, dir) {
       )
       .pipe(gulp.dest(dir + "web")),
 
-    gulp
+    /*gulp
       .src("web/compressed.tracemonkey-pldi-09.pdf")
-      .pipe(gulp.dest(dir + "web")),
+      .pipe(gulp.dest(dir + "web")),*/
   ]);
 }
 
@@ -890,12 +890,12 @@ gulp.task(
           { base: "web/" }
         )
         .pipe(gulp.dest(MINIFIED_DIR + "web")),
-      gulp
+      /*gulp
         .src(["external/bcmaps/*.bcmap", "external/bcmaps/LICENSE"], {
           base: "external/bcmaps",
         })
         .pipe(gulp.dest(MINIFIED_DIR + "web/cmaps")),
-
+*/
       preprocessHTML("web/viewer.html", defines).pipe(
         gulp.dest(MINIFIED_DIR + "web")
       ),
@@ -1035,11 +1035,11 @@ gulp.task(
       gulp
         .src(COMMON_WEB_FILES, { base: "web/" })
         .pipe(gulp.dest(MOZCENTRAL_CONTENT_DIR + "web")),
-      gulp
+      /*gulp
         .src(["external/bcmaps/*.bcmap", "external/bcmaps/LICENSE"], {
           base: "external/bcmaps",
         })
-        .pipe(gulp.dest(MOZCENTRAL_CONTENT_DIR + "web/cmaps")),
+        .pipe(gulp.dest(MOZCENTRAL_CONTENT_DIR + "web/cmaps")),*/
 
       preprocessHTML("web/viewer.html", defines).pipe(
         gulp.dest(MOZCENTRAL_CONTENT_DIR + "web")
@@ -1099,11 +1099,11 @@ gulp.task(
           { base: "web/" }
         )
         .pipe(gulp.dest(CHROME_BUILD_CONTENT_DIR + "web")),
-      gulp
+      /*gulp
         .src(["external/bcmaps/*.bcmap", "external/bcmaps/LICENSE"], {
           base: "external/bcmaps",
         })
-        .pipe(gulp.dest(CHROME_BUILD_CONTENT_DIR + "web/cmaps")),
+        .pipe(gulp.dest(CHROME_BUILD_CONTENT_DIR + "web/cmaps")),*/
 
       preprocessHTML("web/viewer.html", defines).pipe(
         gulp.dest(CHROME_BUILD_CONTENT_DIR + "web")
@@ -1650,24 +1650,24 @@ gulp.task(
           .src("external/dist/**/*", { base: "external/dist", stripBOM: false })
           .pipe(gulp.dest(DIST_DIR)),
         gulp.src(GENERIC_DIR + "LICENSE").pipe(gulp.dest(DIST_DIR)),
-        gulp
-          .src(GENERIC_DIR + "web/cmaps/**/*", { base: GENERIC_DIR + "web" })
-          .pipe(gulp.dest(DIST_DIR)),
+        //gulp
+          //.src(GENERIC_DIR + "web/cmaps/**/*", { base: GENERIC_DIR + "web" })
+          //.pipe(gulp.dest(DIST_DIR)),
         gulp
           .src([
             GENERIC_DIR + "build/pdf.js",
-            GENERIC_DIR + "build/pdf.js.map",
+            //GENERIC_DIR + "build/pdf.js.map",
             GENERIC_DIR + "build/pdf.worker.js",
-            GENERIC_DIR + "build/pdf.worker.js.map",
+            //GENERIC_DIR + "build/pdf.worker.js.map",
             SRC_DIR + "pdf.worker.entry.js",
           ])
           .pipe(gulp.dest(DIST_DIR + "build/")),
         gulp
           .src([
             GENERIC_ES5_DIR + "build/pdf.js",
-            GENERIC_ES5_DIR + "build/pdf.js.map",
+            //GENERIC_ES5_DIR + "build/pdf.js.map",
             GENERIC_ES5_DIR + "build/pdf.worker.js",
-            GENERIC_ES5_DIR + "build/pdf.worker.js.map",
+            //GENERIC_ES5_DIR + "build/pdf.worker.js.map",
             SRC_DIR + "pdf.worker.entry.js",
           ])
           .pipe(gulp.dest(DIST_DIR + "es5/build/")),

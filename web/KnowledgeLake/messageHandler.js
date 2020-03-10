@@ -26,8 +26,8 @@ var IsolatedRuntimeMessageHandlerBuilder = /** @class */ (function () {
     /**
      * Entry point for a parent
      */
-    IsolatedRuntimeMessageHandlerBuilder.prototype.Parent = function (iframe, event, logger) {
-        if (logger === void 0) { logger = new DummyLogger(); }
+    IsolatedRuntimeMessageHandlerBuilder.prototype.Parent = function (iframe, logger, event) {
+        if (logger === void 0 || logger == null) { logger = new DummyLogger(); }
         if (event === void 0) { event = 'load'; }
         var instance = new IsolatedRuntimeMessageHandler(logger);
         iframe.contentWindow.addEventListener(event, function oneTimeHandler() {

@@ -60,6 +60,7 @@ if (typeof PDFJSDev !== "undefined" && PDFJSDev.test("CHROME || GENERIC")) {
   require("./pdf_print_service.js");
 }
 
+
 function getViewerConfiguration() {
   return {
     appContainer: document.body,
@@ -189,25 +190,31 @@ function getViewerConfiguration() {
 }
 
 function webViewerLoad() {
-  const config = getViewerConfiguration();
+  var config = getViewerConfiguration();
   if (typeof PDFJSDev === "undefined" || !PDFJSDev.test("PRODUCTION")) {
     Promise.all([
       SystemJS.import("pdfjs-web/app.js"),
       SystemJS.import("pdfjs-web/app_options.js"),
+      SystemJS.import("ui_utils.js"),
       SystemJS.import("pdfjs-web/genericcom.js"),
       SystemJS.import("pdfjs-web/pdf_print_service.js"),
-    ]).then(function([app, appOptions, ...otherModules]) {
+    ]).then(function([app, appOptions, uiUtils, ...otherModules]) {
+      config.eventBus = new uiUtils.EventBus({ dispatchToDOM: appOptions.AppOptions.get("eventBusDispatchToDOM") });
+
       window.PDFViewerApplication = app.PDFViewerApplication;
       window.PDFViewerApplicationOptions = appOptions.AppOptions;
       app.PDFViewerApplication.run(config);
 
-      StartListeningForPostMessages();
+      StartListeningForPostMessages(config.eventBus);
 
       const event = document.createEvent("CustomEvent");
       event.initCustomEvent("webviewerloaded", true, true, {});
       document.dispatchEvent(event);
     });
   } else {
+    var uiUtils = require("./ui_utils");
+    config.eventBus = new uiUtils.EventBus({ dispatchToDOM: true });
+
     if (typeof PDFJSDev !== "undefined" && PDFJSDev.test("CHROME")) {
       pdfjsWebAppOptions.AppOptions.set("defaultUrl", defaultUrl);
     }
@@ -215,10 +222,9 @@ function webViewerLoad() {
     window.PDFViewerApplication = pdfjsWebApp.PDFViewerApplication;
     window.PDFViewerApplicationOptions = pdfjsWebAppOptions.AppOptions;
 
-
-
     pdfjsWebApp.PDFViewerApplication.run(config);
-    StartListeningForPostMessages();
+
+    StartListeningForPostMessages(config.eventBus);
 
     //if (typeof PDFJSDev !== "undefined" && PDFJSDev.test("GENERIC")) {
       // Give custom implementations of the default viewer a simpler way to
