@@ -34,21 +34,21 @@ function renderPDF(data) {
     });
 }
 
-window.currentPDFAnnotations = {};
+window.currentPDFWidgets = {};
 
 /**
  * Listens for updates to annotations
  */
-window.onAnnotationUpdate = function(key, value, publish) {
+window.onWidgetUpdate = function(key, value, publish) {
     if (publish === void 0) { publish = true; }
 
     if (key != undefined || value != undefined) {
         //console.log(key + ": " + value);
-        window.currentPDFAnnotations[key] = value;
+        window.currentPDFWidgets[key] = value;
     }
 
     if (publish)
-        handler.Send('pdfjs-annotation-update', window.currentPDFAnnotations);
+        handler.Send('pdfjs-annotation-update', window.currentPDFWidgets);
 }
 
 
@@ -59,8 +59,8 @@ window.onAnnotationUpdate = function(key, value, publish) {
 window.StartListeningForPostMessages = function(eventBus) {
     // When the pages are ready, get a base for all annotations
     eventBus.on('pagesloaded', () => {
-        window.currentPDFAnnotations = {};
-        getInitialAnnotations();
+        window.currentPDFWidgets = {};
+        getInitialFormData();
     });
 
 
@@ -84,7 +84,7 @@ window.StartListeningForPostMessages = function(eventBus) {
 
     // Listen for request to get the PDF form data
     handler.Listen('pdfjs-get-form-data', () => {
-        return window.currentPDFAnnotations;
+        return window.currentPDFWidgets;
     });
 }
 
@@ -92,7 +92,7 @@ window.StartListeningForPostMessages = function(eventBus) {
 /**
  * Gets all annotations for the document
  */
-function getInitialAnnotations(){
+function getInitialFormData(){
     var totalPages = PDFViewerApplication.pagesCount;
 
     var allAnnotations = [];
@@ -110,14 +110,25 @@ function getInitialAnnotations(){
         });
     }
 
+    var invalidTypes = ["Link"];
+
     innerProm.then(() => {
+        // Filter through annotations and only take widgets
         for (let i = 0; i < allAnnotations.length; i++) {
             let annotation = allAnnotations[i];
             if (annotation.fieldName == undefined)
                 continue;
 
-            window.onAnnotationUpdate(annotation.fieldName, annotation.fieldValue, (i == allAnnotations.length - 1));
+            if (annotation.annotationType != 20 /* Widget */)
+                continue;
+
+            if (invalidTypes.indexOf(annotation.subtype) != -1 || invalidTypes.indexOf(annotation.fieldType) != -1)
+                continue;
+
+            window.onWidgetUpdate(annotation.fieldName, annotation.fieldValue, false);
         }
+
+        window.onWidgetUpdate(undefined, undefined); // Publish annotations
     });
     innerResolve();
 }

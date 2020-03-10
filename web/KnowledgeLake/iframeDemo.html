@@ -46,6 +46,9 @@
 
             messageHandler.Send('pdfjs-display', '../../test/pdfs/form.pdf');
 
+            messageHandler.Listen('pdfjs-annotation-update', (widgets) => {
+                console.log(widgets);
+            });
             /*setTimeout(() => {
                 console.log("Loading new PDF");
                 messageHandler.Send('pdfjs-display', '../../test/pdfs/form.pdf');

@@ -32,8 +32,8 @@ import {
 
 
 function triggerAnnotationUpdate(key, value) {
-  if (typeof(window.onAnnotationUpdate) == 'function')
-    window.onAnnotationUpdate(key, value);
+  if (typeof(window.onWidgetUpdate) == 'function')
+    window.onWidgetUpdate(key, value);
 }
 
 
