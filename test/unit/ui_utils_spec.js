@@ -340,7 +340,7 @@ describe("ui_utils", function() {
       if (isNodeJS) {
         pending("Document in not supported in Node.js.");
       }
-      const eventBus = new EventBus({ dispatchToDOM: true });
+      const eventBus = new EventBus({ dispatchToDOM: false });
       let count = 0;
       eventBus.on("test", function(evt) {
         expect(evt).toEqual(undefined);
@@ -365,7 +365,7 @@ describe("ui_utils", function() {
       if (isNodeJS) {
         pending("Document in not supported in Node.js.");
       }
-      const eventBus = new EventBus({ dispatchToDOM: true });
+      const eventBus = new EventBus({ dispatchToDOM: false });
       let count = 0;
       function domEventListener(evt) {
         expect(evt.detail).toEqual({ abc: 123 });

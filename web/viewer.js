@@ -213,7 +213,7 @@ function webViewerLoad() {
     });
   } else {
     var uiUtils = require("./ui_utils");
-    config.eventBus = new uiUtils.EventBus({ dispatchToDOM: true });
+    config.eventBus = new uiUtils.EventBus({ dispatchToDOM: false });
 
     if (typeof PDFJSDev !== "undefined" && PDFJSDev.test("CHROME")) {
       pdfjsWebAppOptions.AppOptions.set("defaultUrl", defaultUrl);
