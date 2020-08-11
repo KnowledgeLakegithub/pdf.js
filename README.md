@@ -1,10 +1,26 @@
 # PDF.js [![Build Status](https://travis-ci.org/mozilla/pdf.js.svg?branch=master)](https://travis-ci.org/mozilla/pdf.js)
 
+
 [PDF.js](https://mozilla.github.io/pdf.js/) is a Portable Document Format (PDF) viewer that is built with HTML5.
 
 PDF.js is community-driven and supported by Mozilla Labs. Our goal is to
 create a general-purpose, web standards-based platform for parsing and
 rendering PDFs.
+
+&nbsp;
+
+## KnowledgeLake Changes
+KnoweldgeLake has modified this PDF.js source code to allow for communication using postMessages so PDF.js can be hosted in an isolated iframe.
+
+
+We have added the files in [`web\KnowledgeLake`](https://github.com/KnowledgeLakegithub/pdf.js/tree/master/web/KnowledgeLake), and a few changes around the core code that allows us to to use the `messageHandler` for iframe communication.
+
+&nbsp;
+
+### KnowledgeLake Building
+To build our version of PDF.js and get a usable copy, run `gulp dist` then copy the two folders in `build\generic-es5` to where we have the PDF.js library in our source code.
+
+---
 
 ## Contributing
 
